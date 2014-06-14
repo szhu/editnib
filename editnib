@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+if [[ -z "$1" ]] ; then
+  echo "usage: $0 file.nib"
+  exit 1
+fi
+
+# set -x
+
+for arg in $@
+do
+  nib="$arg"
+  if [[ ! "$nib" = /* ]] ; then # make absolute
+    nib="$(pwd)"/"$nib"
+  fi
+  dir="$(dirname "$arg")"
+
+  if [[ -d "$nib" ]] ; then
+    echo "$arg is already a bundle"
+    continue
+  fi
+
+
+  mv "$nib" "$nib"-"$$"
+  mkdir -p "$nib"
+  mv "$nib"-"$$" "$nib"/keyedobjects.nib
+
+  for file in info classes
+  do
+    defaults write "$nib"/"$file" nothing nothing
+    defaults delete "$nib"/"$file"
+    mv "$nib"/"$file".plist "$nib"/"$file".nib
+  done
+done
