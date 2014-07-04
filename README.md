@@ -1,6 +1,6 @@
 # editnib
 
-Want to edit compiled nibs? (They're not really compiled.)
+Want to edit "compiled" nibs? (They're not really compiled.)
 
 This script follows the method described by these articles:
 
